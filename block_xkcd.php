@@ -50,28 +50,12 @@ class block_xkcd extends block_base {
         return array('all' => true);
     }
 
-    /**
-     * Searches for the first occurence of an html <img> element in a string
-     * and extracts the src if it finds it. Returns boolean false in case an
-     * <img> element is not found.
-     * http://zytzagoo.net/blog/2008/01/23/extracting-images-from-html-using-regular-expressions/
-     * @param    string  $str    An HTML string
-     * @return   mixed           The contents of the src attribute in the
-     *                           found <img> or boolean false if no <img>
-     *                           is found
-     */
-    public function xkcd_img_url($html) {
-        if (stripos($html, '<img') !== false) {
-            $imgsrc_regex = '#<\s*img [^\>]*src\s*=\s*(["\'])(http:\/\/imgs\.xkcd\.com\/comics\/.*?)\1#im';
-            preg_match($imgsrc_regex, $html, $matches);
-            if (is_array($matches) && !empty($matches)) {
-                return $matches[2];
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
+    public function xkcd_image($html) {
+        $dom = new DOMDocument();
+        @$dom->loadHTML($html);
+        $xpath = new DOMXPath($dom);
+        $nodelist = $xpath->query("//body/div/div[@id='comic']/img/@src");
+        return $nodelist->item(0)->nodeValue;
     }
 
     public function xkcd_title($html) {
@@ -81,15 +65,7 @@ class block_xkcd extends block_base {
         $nodelist = $xpath->query("//body/div/div[@id='comic']/img/@title");
         return $nodelist->item(0)->nodeValue;
     }
-/*
-    public function xkcd_title($html) {
-        $dom = new DOMDocument();
-        @$dom->loadHTML($html);
-        $xpath = new DOMXPath($dom);
-        $nodelist = $xpath->query("//body/div/div[@id='ctitle']");
-        return $nodelist->item(0)->nodeValue;
-    }
-*/
+
     public function xkcd_alt($html) {
         $dom = new DOMDocument();
         @$dom->loadHTML($html);
@@ -106,14 +82,7 @@ class block_xkcd extends block_base {
         $url = 'http://xkcd.com/';
         $src = file_get_contents($url);
 
-        foreach (explode("\n", $src) as $line) {
-            $res = $this->xkcd_img_url($line);
-            if ($res) {
-                $image = $res;
-                break;
-            }
-        }
-
+        $image  = $this->xkcd_image($src);
         $title  = $this->xkcd_title($src);
         $alt    = $this->xkcd_alt($src);
 
@@ -124,7 +93,7 @@ class block_xkcd extends block_base {
 
         $this->content = new stdClass;
         $this->content->text = $build;
-        //$this->content->footer = '';
+        //$this->content->footer = $footer;
 
         return $this->content;
 

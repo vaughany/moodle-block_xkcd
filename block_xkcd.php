@@ -95,14 +95,15 @@ class block_xkcd extends block_base {
         $build  = '<h6>'.$alt.'</h6>'."\n";
         $build .= '<div id="xkcdimage">'."";
         $build .= '    <a rel="lightbox" href="'.$image.'">'."\n";
-        $build .= '    <img src="'.$image.'" title="'.$title.'" alt="'.$alt.'" />'."\n";
+        $build .= '        <img src="'.$image.'" title="'.$title.'" alt="'.$alt.'" />'."\n";
+        $build .= '    </a>'."\n";
         $build .= "</div>\n";
 
-        $footer = '<p>|<- <  > ->|</p>'."\n";
+        $footer = '<a href="http://xkcd.com/">xkcd website</a>'."\n";
 
         $this->content = new stdClass;
         $this->content->text = $build;
-        //$this->content->footer = $footer;
+        $this->content->footer = $footer;
 
         return $this->content;
 

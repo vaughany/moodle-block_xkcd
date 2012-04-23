@@ -50,6 +50,12 @@ class block_xkcd extends block_base {
         return array('all' => true);
     }
 
+    public function html_attributes() {
+        $attributes = parent::html_attributes();
+        $attributes['class'] .= ' block_'. $this->name();
+        return $attributes;
+    }
+
     public function xkcd_image($html) {
         $dom = new DOMDocument();
         @$dom->loadHTML($html);
@@ -86,10 +92,13 @@ class block_xkcd extends block_base {
         $title  = $this->xkcd_title($src);
         $alt    = $this->xkcd_alt($src);
 
-        $build  = '<h6 style="text-align:center;">'.$alt.'</h6>'."\n";
-        $build .= '<div style="overflow:scroll;"><img src="'.$image.'" title="'.$title.'" alt="'.$alt.'" /></div>'."\n";
+        $build  = '<h6>'.$alt.'</h6>'."\n";
+        $build .= '<div id="xkcdimage">'."";
+        $build .= '    <a rel="lightbox" href="'.$image.'">'."\n";
+        $build .= '    <img src="'.$image.'" title="'.$title.'" alt="'.$alt.'" />'."\n";
+        $build .= "</div>\n";
 
-        $footer = '<p style="text-align:center;">|<- <  > ->|</p>'."\n";
+        $footer = '<p>|<- <  > ->|</p>'."\n";
 
         $this->content = new stdClass;
         $this->content->text = $build;

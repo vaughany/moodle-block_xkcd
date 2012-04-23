@@ -1,1 +1,11 @@
-/* do we need any styles? */
+/* regular block css */
+.block_xkcd p,
+.block_xkcd h6 {
+    text-align: center;
+}
+.block_xkcd div.xkcdimage {
+    /*overflow: scroll;*/
+}
+.block_xkcd img {
+    width: 100%;
+}

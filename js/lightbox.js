@@ -46,8 +46,8 @@ lightbox = new Lightbox options
   LightboxOptions = (function() {
 
     function LightboxOptions() {
-      this.fileLoadingImage = 'images/loading.gif';
-      this.fileCloseImage = 'images/close.png';
+      this.fileLoadingImage = '/blocks/xkcd/images/loading.gif';
+      this.fileCloseImage = '/blocks/xkcd/images/close.png';
       this.resizeDuration = 500;
       this.fadeDuration = 500;
       this.labelImage = "Image";

@@ -81,6 +81,12 @@ class block_xkcd extends block_base {
     }
 
     public function get_content() {
+        // experimental jQuery Lightbox2
+        global $PAGE;
+        $PAGE->requires->js('/blocks/xkcd/js/jquery-1.7.2.min.js');
+        $PAGE->requires->js('/blocks/xkcd/js/lightbox.js');
+        $PAGE->requires->css('/blocks/xkcd/css/lightbox.css');
+
         $image  = '';
         $title  = '';
         $alt    = '';
@@ -94,7 +100,7 @@ class block_xkcd extends block_base {
 
         $build  = '<h6>'.$alt.'</h6>'."\n";
         $build .= '<div id="xkcdimage">'."";
-        $build .= '    <a rel="lightbox" href="'.$image.'">'."\n";
+        $build .= '    <a rel="lightbox" href="'.$image.'" title="'.$alt.'">'."\n";
         $build .= '    <img src="'.$image.'" title="'.$title.'" alt="'.$alt.'" />'."\n";
         $build .= "</div>\n";
 
